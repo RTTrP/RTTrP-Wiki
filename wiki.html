@@ -35,19 +35,26 @@ RTTrP is comprised of two separate protocols which share a common header:
 
 # **Real-Time Tracking Protocol - Lighting**
 
-RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.
+RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent<br/>
+from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show<br/>
+starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.
 
 # **Real-Time Tracking Protocol - Motion**
 
-RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).
+RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a<br/>
+tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a<br/>
+fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).
 
 # **Versions and Backward/Forward Compatibility**
 
-A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.
+A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the<br/>
+“type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the<br/>
+order of module types within a module is not guaranteed.
 
 # **Downloads**
 
-For all downloads regarding the RTTrP suite of protocols please see the specific branches for each type of protocol. Each branch will contain tools for testing implementations of the current version of the protocol.
+For all downloads regarding the RTTrP suite of protocols please see the specific branches for each type of protocol. Each branch will<br/>
+contain tools for testing implementations of the current version of the protocol.
 
 * [RTTrP](https://github.com/CAST-Software/RTTrP-v1.8.7.0#downloads)
 * [RTTrPL](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPL-1.8.7.0#downloads)
@@ -59,7 +66,8 @@ For all downloads regarding the RTTrP suite of protocols please see the specific
 * Packet definitions for **RTTrPM (Real-Time Tracking Protocol - Motion**) are located at [RTTrPM](RTTrPM-Wiki.html)
 * Packet definitions for **RTTrPL (Real-Time Tracking Protocol - Lighting**) are located at [RTTrPL](RTTrPL-Wiki.html)
 
-**Note**: As of August 19th, 2014, Tracking Protocol is renamed to RTTrPM, On-the-Fly Merging (OTFM) is renamed to RTTrPL and common elements shared between the protocols are now named RTTrP.
+**Note**: As of August 19th, 2014, Tracking Protocol is renamed to RTTrPM, On-the-Fly Merging (OTFM) is renamed to RTTrPL and<br/>
+common elements shared between the protocols are now named RTTrP.
 
 # **Tools and Resources**
 
@@ -69,11 +77,14 @@ For all downloads regarding the RTTrP suite of protocols please see the specific
 
 # Application Specific Use Cases
 
-Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.
+Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media<br/>
+applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.
 
 # **Simulator**
 
-The Simulator is a testing application which will simulate positional and rotational data of a beacon sent from the BlackTrax tracking system. Download the ZIP package and double-click on the setup.exe. The Setup Instruction PDF file will help you configure all the communication settings. Additionally, a legacy repository is available [here](https://github.com/CAST-Software/RTTrP-Legacy.git).
+The Simulator is a testing application which will simulate positional and rotational data of a beacon sent from the BlackTrax<br/>
+tracking system. Download the ZIP package and double-click on the setup.exe. The Setup Instruction PDF file will help you configure<br/>
+all the communication settings. Additionally, a legacy repository is available [here](https://github.com/CAST-Software/RTTrP-Legacy.git).
 -->
 
 <!--footer-panel
