@@ -27,21 +27,21 @@
 <!--content-panel
 ## **Data Structures**
 
-RTTrP is simply a packet header, which encapsulates RTTrPL, RTTrPM or RTTrPA packets. An RTTrP Packet contains any number of packet<br/>
-modules, either Output modules (RTTrPL) or Trackable modules (RTTrPM/A), but not both. Each type contains other packet modules nested<br/>
+RTTrP is simply a packet header, which encapsulates RTTrPL, RTTrPM packets. An RTTrP Packet contains any number of packet<br/>
+modules, either Output modules (RTTrPL) or Trackable modules (RTTrPM), but not both. Each type contains other packet modules nested<br/>
 within, which contain further information. 
 
 For RTTrPL, Output modules contain a number of nested modules which contain information about specific DMX universes and the channels<br/>
-being controlled. Whereas for RTTrPM/A Trackable modules contain other modules which provide information about the motion of a specific<br/>
+being controlled. Whereas for RTTrPM Trackable modules contain other modules which provide information about the motion of a specific<br/>
 tracked object.
 
 ## **General Information**
 
 The Integer Signature field is always one of two values to define Endinaness of the integer type fields in a packet. To distinguish an<br/>
-RTTrPL packet from an RTTrPM or RTTrPA packet, the Floating Point Signature Fields should be set to the following:
+RTTrPL packet from an RTTrPM packet, the Floating Point Signature Fields should be set to the following:
 
 * **RTTrPL**: Big Endian - 0x4434, Little Endian - 0x3444
-* **RTTrPM/A**: Big Endian - 0x4334, Little Endian - 0x3443
+* **RTTrPM**: Big Endian - 0x4334, Little Endian - 0x3443
 
 Lastly, the context field is a user definable field that can be used for any purpose. See the section [Application Specific Use Cases](#application-specific-use-cases)<br/>
 for examples of how this field is used.
