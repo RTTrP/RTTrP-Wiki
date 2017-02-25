@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <title>Real-Time Tracking Protocol</title>
+    <script src="document.min.js" userjs="user.js" icon="favicon.ico" id="DOC" onerror="var l=document.createElement('link'),s=document.createElement('script');l.rel='stylesheet';l.href='http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css';l.id='bootstrap.css';l.auto='1';document.head.insertBefore(l,document.getElementById('DOC'));s.src='http://aplib.github.io/document.min.js';document.head.appendChild(s);"></script>
+</head>
+<body>
+    
+<!--fixed-top-bar
+[navbar]
+* [General Information](index.html)
+    * [RTTrP](index.html)
+    * [RTTrPM](RTTrPM.html)
+    * [RTTrPL](RTTrPL.html)
+* [Wiki](wiki.html)
+    * [Home](wiki.html)
+    * [RTTrP](RTTrP-Wiki.html)
+    * [RTTrPM](RTTrPM-Wiki.html)
+    * [Euler Order](Euler-Order.html)
+    * [RTTrPL](RTTrPL-Wiki.html)
+[/navbar]
+-->
+<!--header-panel
+# **About RTTrPL**
+-->
+
+<!--content-panel
+# **Data Structures**
+
+An RTTrPL packet is a list of universes, each of which contains a nested list of spots (fixture IDs), which further contain a nested<br/>
+list of channels and their values.
+
+# **General Information**
+
+ * In general the Peer is responsible for DMX merging
+ * The Peer buffer and RTTrPL generating buffer need to be synchronized
+ * Synchronization model: Snapshot / Update, which balances performance and implementation difficulty
+ * Snapshot and Update share the same packet format, the type should be indicated by the Action field in the Lighting Output module
+ * Snapshot contains all channels of all universes that are being controlled while Update changes only a portion of the buffer
+ * An Update may contain one or more universes
+ * Hold Time controls when to release the buffer, if a timeout ouccurs, the Peer should release its buffer
+ * Out of Sync detection:  Lighting Sequence in Lighting Output module is a sequentially increasing number, if the Peer receives<br/>
+ packets out of sequence, it should wait for a Snapshot packet from the generator to re-sync
+ 
+For all RTTrPL Downloads please visit the [RTTrPL branch] (https://github.com/CAST-Software/RTTrP-v1.8.7.0/blob/RTTrPL-1.8.7.0/README.md#downloads).
+
+# **Packet Structure**
+
+## Real-Time Tracking Protocol (RTTrP) Header
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Header / Integer Signature | UInt16 | 2 | Big Endian: 0x4154, Little Endian: 0x5441
+1 | Header / Float Signature | UInt16 | 2 | Big Endian: 0x4434, Little Endian: 0x3444
+2 | Version | UInt16 | 2 | Value = 0x 00 03
+3 | Packet ID | UInt32 | 4 | Packet sequence number
+4 | Packet Format | UInt8 | 1 | Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)
+5 | Size | UInt16 | 2 | Size of packet in bytes including header	
+6 | Context | UInt32 | 4 | User definable
+7 | Number of Packet Modules | UInt8 | 1 |
+8 | Packet Module 0 | Packet Module | variable | 
+9 | Packet Module 1 | Packet Module | variable | 
+... | ...
+<br/>
+For more in-depth details on the RTTrP packet header see [RTTrP](https://github.com/CAST-Software/RTTrP-v1.8.2.0/wiki/RTTrP)
+
+## Packet Modules
+
+Enumerated Type | Value
+----------------|------
+Lighting Output | 0x07
+Lighting Sync | 0x08
+Universe | 0x09
+Spot | 0x0A
+
+## Packet Module - Lighting Output
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x07
+1 | Size | UInt16| 2 | of module
+2 | Lighting Sequence| UInt32 | 4 | Lighting session sequence. Starting from 0
+3 | Action | UInt8 | 1 | 0x00: snapshot; 0x01: update
+4 | Hold Time | UInt32 | 4 | 0x00: Do not release automatically; > 0 milliseconds before releasing
+5 | Number of universe modules | UInt16 | 2 	 
+6 | Universe module 0 | Packet Module | variable 	 
+7 | Universe module 1 | Packet Module | variable 	 
+8 |... | ...
+
+## Packet Module - Universe Module
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x09
+1 | Size | UInt16| 2 | of module
+2 | Universe ID | UInt16 |2 	 
+3 | Number of Spot modules | UInt16 | 2 	 
+4 | Spot module 0 | Packet Module | variable 	 
+5 | Spot module 1 | Packet Module | variable 	 
+6 | ... | ... 
+
+## Packet Module - Spot Module
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x0A
+1 | Size | UInt16| 2 | of module
+2 | Spot ID | UInt16 | 2 	 
+3 | Spot Offset | UInt16 | 2 | Locate the byte offset in a universe
+4 | Number of Channel Structures | UInt16 | 2 	 
+5 | Channel Block 0 |  | variable 	 
+6 | Channel Block 1 |  | variable 	 
+7 | ... | ...
+<br/>
+**NOTE**: The Spot ID field refers to the Fixture ID
+
+## Channel Block (Fix-sized)
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Channel Offset | UInt16 | 2 | Locate the byte offset in Spot (not universe)
+1 | Xfade | UInt16 | 2 | 0.00% -- 100.00% (fade / 100) (Could be wrong if cross-channel values are used) 
+2 | Value | UInt8 | 1 | DMX channel value
+<br/>
+**NOTE**: This "module" cannot be skipped and will always be present in each RTTrPL packet
+
+## Packet Module - Lighting Sync Module
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x8. Lighting device send this to sync BlackTrax lighting session
+1 | Size | UInt16| 2 | of module
+2 | Device ID | UInt32 | 4 | User defined (Cast assigned)
+3 | Device Sub ID 0 | UInt32 | 4 | User Defined
+4 | Device Sub ID 1 | UInt32 | 4 | User Defined
+5 | Sequence Number | UInt32 | 4 | Last mismatch sequence. 0 if unknown
+
+
+# **Application Specific Implementation**
+
+The BlackTrax tracking system uses RTTrPL in a specific manner, the following are some points related specifically to the BlackTrax<br/>
+tracking system and its implementation and use of RTTrPL
+
+ * BlackTrax's default UDP lighting packet output address:  238.210.10.3:6456 (Multicast)
+ * BlackTrax's default UDP lighting packet synchronization address: 238.210.10.4:6457 (Multicast)
+ * BlackTrax keeps a buffer of channels (of all universes) that it is controlling, the lighting node (Peer) should keep the same buffer<br/>
+ as well
+ * BlackTrax may release all channels and may also release only specific channels when running, it utilizes the Xfade field in a Channel<br/>
+ Block module to define when to take control and release a channel 
+ * If the hold time is set to 0x00, the Peer should never release control automatically as BlackTrax may hold a channel for a long time 
+ * To get a Snapshot earlier, the Peer may send out a Lighting Sync packet and BlackTrax will react with a Snapshot, this is used to<br/>
+ help sync the two buffers together
+ * This feature is not currently implemented and so the Lighting Sync Module is an optional module
+-->
+
+<!--footer-panel
+If you have questions or concerns regarding the repository or any information herein, please contact:
+
+Marty Cochrane: marty.cochrane@blacktrax.ca<br>
+Joe Zampino: joseph@blacktrax.ca
+-->
+
+<noscript><div class="alert alert-warning">This Website requires your browser to be JavaScript enabled.</div></noscript>
+</body>
+</html>
