@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <title>Real-Time Tracking Protocol</title>
+    <script src="document.min.js" userjs="user.js" icon="favicon.ico" id="DOC" onerror="var l=document.createElement('link'),s=document.createElement('script');l.rel='stylesheet';l.href='http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css';l.id='bootstrap.css';l.auto='1';document.head.insertBefore(l,document.getElementById('DOC'));s.src='http://aplib.github.io/document.min.js';document.head.appendChild(s);"></script>
+</head>
+<body>
+    
+<!--fixed-top-bar
+[navbar]
+* [General Information](index.html)
+    * [RTTrP](index.html)
+    * [RTTrPM](RTTrPM.html)
+    * [RTTrPL](RTTrPL.html)
+* [Wiki](wiki.html)
+    * [Home](wiki.html)
+    * [RTTrP](RTTrP-Wiki.html)
+    * [RTTrPM](RTTrPM-Wiki.html)
+    * [RTTrPL](RTTrPL-Wiki.html)
+[/navbar]
+-->
+<!--header-panel
+# **RTTrP - Real-Time Tracking Protocol - v1.8.7.0**
+-->
+<!--content-panel
+# General Information
+
+## **Real-Time Tracking Protocol**
+
+The Real Time Tracking Protocol (RTTrP) is a suite of Protocols developed to transmit tracked motion information between systems.
+
+RTTrP is comprised of three separate protocols which share a common header:
+
+* **RTTrPL** (Real-Time Tracking Protocol - Lighting)
+* **RTTrPM** (Real-Time Tracking Protocol - Motion)
+* **RTTrPA** (Real-Time Tracking Protocol - Audio)
+
+## **Real-Time Tracking Protocol - Lighting**
+
+RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.
+
+## **Real-Time Tracking Protocol - Motion**
+
+RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).
+
+## **Real-Time Tracking Protocol - Audio**
+
+Finally, there is an extension to RTTrPM for Open Sound Control ([OSC] (http://opensoundcontrol.org/spec-1_0)) called RTTrPA. RTTrPA packets are RTTrPM packets wrapped in an OSC Blob. For a detailed explanation of the OSC protocol please see the provided link.
+
+## **Versions and Backward/Forward Compatibility**
+
+A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.
+
+## **Downloads**
+
+For all downloads regarding the RTTrP suite of protocols please see the specific branches for each type of protocol. Each branch will contain tools for testing implementations of the current version of the protocol.
+
+* [RTTrP](https://github.com/CAST-Software/RTTrP-v1.8.7.0#downloads)
+* [RTTrPL](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPL-1.8.7.0#downloads)
+* [RTTrPM](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPM-1.8.7.0#downloads)
+* [RTTrPA](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPA-1.8.7.0#downloads)
+
+# Packet Specifications
+
+* Packet definitions for **RTTrP (Real-Time Tracking Protocol)** are located at [RTTrP](RTTrP-Wiki.html)
+* Packet definitions for **RTTrPM (Real-Time Tracking Protocol - Motion**) are located at [RTTrPM](RTTrPM-Wiki.html)
+* Packet definitions for **RTTrPL (Real-Time Tracking Protocol - Lighting**) are located at [RTTrPL](RTTrPL-Wiki.html)
+
+**Note**: As of August 19th, 2014, Tracking Protocol is renamed to RTTrPM, On-the-Fly Merging (OTFM) is renamed to RTTrPL and common elements shared between the protocols are now named RTTrP.
+
+## **Tools and Resources**
+
+* [IEE 754 Converter](http://www.h-schmidt.net/FloatConverter/IEEE754.html)
+* [UTF-8 Converter](http://rishida.net/tools/conversion/)
+* [OSC Packet Specification] (http://opensoundcontrol.org/spec-1_0/)
+
+# Application Specific Use Cases
+
+Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.
+
+## **Simulator**
+
+The Simulator is a testing application which will simulate positional and rotational data of a beacon sent from the BlackTrax tracking system. Download the ZIP package and double-click on the setup.exe. The Setup Instruction PDF file will help you configure all the communication settings. Additionally, a legacy repository is available [here](https://github.com/CAST-Software/RTTrP-Legacy.git).
+-->
+
+<!--footer-panel
+If you have questions or concerns regarding the repository or any information herein, please contact:
+
+Marty Cochrane: marty.cochrane@blacktrax.ca<br>
+Joe Zampino: joseph@blacktrax.ca
+-->
+
+<noscript><div class="alert alert-warning">This Website requires your browser to be JavaScript enabled.</div></noscript>
+</body>
+</html>
