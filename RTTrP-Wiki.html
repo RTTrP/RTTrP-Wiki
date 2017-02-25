@@ -25,7 +25,7 @@
 -->
 
 <!--content-panel
-## **Data Structures**
+# **Data Structures**
 
 RTTrP is simply a packet header, which encapsulates RTTrPL, RTTrPM packets. An RTTrP Packet contains any number of packet<br/>
 modules, either Output modules (RTTrPL) or Trackable modules (RTTrPM), but not both. Each type contains other packet modules nested<br/>
@@ -35,7 +35,7 @@ For RTTrPL, Output modules contain a number of nested modules which contain info
 being controlled. Whereas for RTTrPM Trackable modules contain other modules which provide information about the motion of a specific<br/>
 tracked object.
 
-## **General Information**
+# **General Information**
 
 The Integer Signature field is always one of two values to define Endinaness of the integer type fields in a packet. To distinguish an<br/>
 RTTrPL packet from an RTTrPM packet, the Floating Point Signature Fields should be set to the following:
@@ -52,7 +52,7 @@ The conceptual drawing below describes the breakdown of an RTTrP Packet.
 
 **Note**: When outputting Tracked Point position/acceleration/velocity, there is a single module **for each point**
 
-# Packet Structure
+# **Packet Structure**
 
 ## **Real-Time Tracking Protocol (RTTrP) Header**
 
