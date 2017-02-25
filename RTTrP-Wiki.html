@@ -59,7 +59,7 @@ The conceptual drawing below describes the breakdown of an RTTrP Packet.
 Field | Name | Type | Size (bytes) | Description
 ------|------|------------------------|--------------|-------------
 0 | Header / Integer Signature | UInt16 | 2 | Big Endian: 0x4154, Little Endian: 0x5441
-1 | Header / Float Signature | UInt16 | 2 | Big Endian: 0x4434 (RTTrPL) / 0x4334 (RTTrPM/A), Little Endian: 0x3444 (RTTrPL) / 0x3443 (RTTrPM)
+1 | Header / Float Signature | UInt16 | 2 | Big Endian: 0x4434 (RTTrPL) / 0x4334 (RTTrPM), Little Endian: 0x3444 (RTTrPL) / 0x3443 (RTTrPM)
 2 | Version | UInt16 | 2 | Value = 0x0002
 3 | Packet ID | UInt32 | 4 | Packet sequence number
 4 | Packet Format | UInt8 | 1 | Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)
