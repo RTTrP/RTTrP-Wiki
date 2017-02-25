@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <title>Real-Time Tracking Protocol</title>
+    <script src="document.min.js" userjs="user.js" icon="favicon.ico" id="DOC" onerror="var l=document.createElement('link'),s=document.createElement('script');l.rel='stylesheet';l.href='http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css';l.id='bootstrap.css';l.auto='1';document.head.insertBefore(l,document.getElementById('DOC'));s.src='http://aplib.github.io/document.min.js';document.head.appendChild(s);"></script>
+</head>
+<body>
+    
+<!--fixed-top-bar
+[navbar]
+* [General Information](index.html)
+    * [RTTrP](index.html)
+    * [RTTrPM](RTTrPM.html)
+    * [RTTrPL](RTTrPL.html)
+* [Wiki](wiki.html)
+    * [Home](wiki.html)
+    * [RTTrP](RTTrP-Wiki.html)
+    * [RTTrPM](RTTrPM-Wiki.html)
+    * [RTTrPL](RTTrPL-Wiki.html)
+[/navbar]
+-->
+<!--header-panel
+# **About RTTrPM**
+-->
+
+<!--content-panel
+# **Data Structures**
+
+Each packet is comprised of the RTTrP header and if tracking information is available, should contain at least one Trackable module.<br/>
+Each Trackable module should contain a number of sub-modules each of which contain specific types of information about a tracked object<br/>
+or point, including:
+
+* Centroid Position (X, Y, Z coordinates)
+* Individual tracked point position (X, Y, Z co-ordinates)
+* Orientation in Euler (X, Y, Z rotation) or Quaternion format (X, Y, Z, Q)
+
+# **General Information**
+
+RTTrPM packets should always be sent at an implementation specific fixed rate. In some scenarios, it is possible to implement a heart<br/>
+beat mechanism by sending RTTrPM packets which contain just an empty RTTrP packet, with an RTTrPM signature.
+
+# **Downloads**
+
+For all RTTrPM downloads, please visit the [RTTrPM branch] (https://github.com/CAST-Software/RTTrP-v1.8.7.0/blob/RTTrPM-1.8.7.0/README.md#downloads)
+
+# **Packet Structure**
+
+## Real-Time Tracking Protocol (RTTrP) Header
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Header / Integer Signature | UInt16 | 2 | Big Endian: 0x4154, Little Endian: 0x5441
+1 | Header / Float Signature | UInt16 | 2 | Big Endian: 0x4334, Little Endian: 0x3443
+2 | Version | UInt16 | 2 | Value = 0x0002
+3 | Packet ID | UInt32 | 4 | Packet sequence number
+4 | Packet Format | UInt8 | 1 | Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)
+5 | Size | UInt16 | 2 | Size of packet in bytes including header	
+6 | Context | UInt32 | 4 | User definable
+7 | Number of Packet Modules | UInt8 | 1 |
+8 | Packet Module 0 | Packet Module | variable | 
+9 | Packet Module 1 | Packet Module | variable | 
+... | ...
+
+For more in-depth details on the RTTrP packet header see [RTTrP](RTTrP-Wiki.html)
+
+## Packet Modules
+
+Enumerated Type | Value
+----------------|------
+Trackable (without Timestamp) | 0x01
+Trackable (with Timestamp) | 0x51
+Centroid Position | 0x02
+Orientation (Quaternion) | 0x03
+Orientation (Euler) | 0x04
+Tracked Point Position | 0x06
+Centroid Acceleration and Velocity | 0x20
+Tracked Point Acceleration and Velocity | 0x21
+
+## Packet Module - Trackable (without Timestamp)
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x01
+1 | Size | UInt16 | 2 | Size of packet module including type and size
+2 | Name Length | UInt8 | 1 | Length of Trackable Name
+3 | Name | UTF8 | Variable | Length is equal to Trackable Name Length
+4 | Number of Packet Modules | UInt8 | Total number of sub-modules
+5 | Packet Module 0 | Packet Module | Variable | 
+6 | Packet Module 1 | Packet Module | Variable | 
+... | ...
+
+## Packet Module - Trackable (with Timestamp)
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x51
+1 | Size | UInt16 | 2 | Size of packet module including type and size
+2 | Name Length | UInt8 | 1 | Length of Trackable Name
+3 | Name | UTF8 | Variable | Length is equal to Trackable Name Length
+4 | Timestamp | UInt32 | 4 | Sequence number (Frame ID)
+5 | Number of Packet Modules | UInt8 | Total number of sub-modules
+6 | Packet Module 0 | Packet Module | variable | 
+7 | Packet Module 1 | Packet Module | variable | 
+... | ...
+
+## Packet Module - Centroid Position
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x02
+1 | Size | UInt16 | 2 | Size of packet module including type and size = 29 (0x1D)
+2 | Latency | UInt16 | 2 | Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow
+3 | X | Double | 8 | Position of the X coordinate
+4 | Y | Double | 8 | Position of the Y coordinate
+5 | Z | Double | 8 | Position of the Z coordinate
+
+## Packet Module - Tracked Point Position
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x06
+1 | Size | UInt16 | 2 | Size of packet module including type and size = 30 (0x1E)
+2 | Latency | UInt16 | 2 | Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow
+3 | X | Double | 8 | Position of the X coordinate
+4 | Y | Double | 8 | Position of the Y coordinate
+5 | Z | Double | 8 | Position of the Z coordinate
+6 | Index | UInt8 | 1 | Tracked Point Index (0x00, 0x01, 0x02 etc.)
+
+## Packet Module - Orientation (Quaternion)
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x03
+1 | Size | UInt16 | 2 | Size of packet module including type and size = 37
+2 | Latency | UInt16 | 2 | Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow
+3 | Qx | Double | 8 | X component of tracked object using quaternions
+4 | Qy | Double | 8 | Y component of tracked object using quaternions
+5 | Qz | Double | 8 | Z component of tracked object using quaternions
+6 | Qw | Double | 8 | Complex component of tracked object using quaternions
+
+## Packet Module - Orientation (Euler)
+
+Field | Name | Type | Size (bytes) | Description
+------|------|------------------------|--------------|-------------
+0 | Type | UInt8 | 1 | Value = 0x04
+1 | Size | UInt16 | 2 | Size of packet module including type and size = 31
+2 | Latency | UInt16 | 2 | Approximate time in milliseconds since last measurement, if equal to 0xFFFF overflow
+3 | Order | UInt16 | 2 | Value = see order table below
+4 | R1 | Double | 8 | Rotation in Rad along first axis
+5 | R2 | Double | 8 | Rotation in Rad along second axis
+6 | R3 | Double | 8 | Rotation in Rad along third axis
+
+For a list of Euler Angle Order values, please see [Euler Order](Euler-Order.html)
+
+## Packet Module - Centroid Acceleration and Velocity
+
+Field | Name | Type | Size (bytes) | Descritpion
+------|------|------|--------------|------------
+0 | Type | UInt8 | 1 | Value = 0x20
+1 | Size | UInt16 | 2 | Size of packet module including the type and size
+2 | X | Double | 8 | Position of the X coordinate
+3 | Y | Double | 8 | Position of the Y coordinate
+4 | Z | Double | 8 | Position of the Z coordinate
+5 | Acceleration X | Float | 4 | Calculated centroid acceleration in the X direction
+6 | Acceleration Y | Float | 4 | Calculated centroid acceleration in the Y direction
+7 | Acceleration Z | Float | 4 | Calculated centroid acceleration in the Z direction
+8 | Velocity X | Float | 4 | Calculated centroid velocity in the X direction
+9 | Velocity Y | Float | 4 | Calculated centroid velocity in the Y direction
+10 | Velocity Z | Float | 4 | Calculated centroid velocity in the Z direction
+... | ...
+
+## Packet Module - Tracked Point Acceleration and Velocity
+
+Field | Name | Type | Size (bytes) | Descritpion
+------|------|------|--------------|------------
+0 | Type | UInt8 | 1 | Value = 0x21
+1 | Size | UInt16 | 2 | Size of packet module including the type and size
+2 | X | Double | 8 | Position of the X coordinate
+3 | Y | Double | 8 | Position of the Y coordinate
+4 | Z | Double | 8 | Position of the Z coordinate
+5 | Acceleration X | Float | 4 | Calculated tracked point acceleration in the X direction
+6 | Acceleration Y | Float | 4 | Calculated tracked point acceleration in the Y direction
+7 | Acceleration Z | Float | 4 | Calculated tracked point acceleration in the Z direction
+8 | Velocity X | Float | 4 | Calculated tracked point velocity in the X direction
+9 | Velocity Y | Float | 4 | Calculated tracked point velocity in the Y direction
+10 | Velocity Z | Float | 4 | Calculated tracked point velocity in the Z direction
+11 | Index | UInt8 | 1 | Tracked Point Index (0x00, 0x01, 0x02 etc.)
+... | ...
+
+# **Application Specific Implementation**
+
+The BlackTrax tracking system generates RTTrPM to output to third-party listeners, such as media servers. BlackTrax outputs tracking<br/>
+information for individual beacon tracked points using Tracked Point modules. Each BlackTrax beacon can have up to three individual<br/>
+LEDs/tracked points. Alternatively, the system can also output Centroid modules, which calculate the center position of a tracked<br/>
+object (Trackable) based on the centroid of each individual LED attached to a beacon. Some other general points regarding the BlackTrax<br/>
+implementation of RTTrPM:
+
+* BlackTrax sends out RTTrPM packets at a rate of 100Hz
+* BlackTrax by default sends out a heartbeat, or empty RTTrP header with an RTTrPM signature if no beacon or LED data is available in<br/>
+the current frame
+* BlackTrax has the ability to add and remove different modules at any given time
+* In the BlackTrax implementation of the Trackable module with Timestamp, the Timestamp value is equal to the frame ID of the cameras<br/>
+in the BlackTrax system
+* Euler Orientation modules always send with an order of 0x0123 (X1, Y1, Z1)
+* The Tracked Point modules correspond to the LEDs on a BlackTrax beacon (trackable), the Index is either 0x01, 0x02 or 0x03
+* The context field is always set to -1 (0xFFFFFFFF) as Trackable information sent out of BlackTrax as RTTrPM does not use Chapter data<br/>
+and does not depend on any fixtures/moving lights.
+-->
+
+<!--footer-panel
+If you have questions or concerns regarding the repository or any information herein, please contact:
+
+Marty Cochrane: marty.cochrane@blacktrax.ca<br>
+Joe Zampino: joseph@blacktrax.ca
+-->
+
+<noscript><div class="alert alert-warning">This Website requires your browser to be JavaScript enabled.</div></noscript>
+</body>
+</html>
