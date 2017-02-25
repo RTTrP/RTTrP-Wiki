@@ -34,7 +34,6 @@ RTTrP is comprised of three separate protocols which share a common header:
 
 * **RTTrPL** (Real-Time Tracking Protocol - Lighting)
 * **RTTrPM** (Real-Time Tracking Protocol - Motion)
-* **RTTrPA** (Real-Time Tracking Protocol - Audio)
 
 ## **Real-Time Tracking Protocol - Lighting**
 
@@ -43,10 +42,6 @@ RTTrPL is used to stream lighting fixture and DMX information to third parties i
 ## **Real-Time Tracking Protocol - Motion**
 
 RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).
-
-## **Real-Time Tracking Protocol - Audio**
-
-Finally, there is an extension to RTTrPM for Open Sound Control ([OSC] (http://opensoundcontrol.org/spec-1_0)) called RTTrPA. RTTrPA packets are RTTrPM packets wrapped in an OSC Blob. For a detailed explanation of the OSC protocol please see the provided link.
 
 ## **Versions and Backward/Forward Compatibility**
 
@@ -59,7 +54,6 @@ For all downloads regarding the RTTrP suite of protocols please see the specific
 * [RTTrP](https://github.com/CAST-Software/RTTrP-v1.8.7.0#downloads)
 * [RTTrPL](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPL-1.8.7.0#downloads)
 * [RTTrPM](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPM-1.8.7.0#downloads)
-* [RTTrPA](https://github.com/CAST-Software/RTTrP-v1.8.7.0/tree/RTTrPA-1.8.7.0#downloads)
 
 # Packet Specifications
 
