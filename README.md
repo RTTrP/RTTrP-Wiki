@@ -1,35 +1,27 @@
-# Simple Markdown site template
-#### Incredible simple but powerful site template
+# [Start Bootstrap](http://startbootstrap.com/) - [Clean Blog](http://startbootstrap.com/template-overviews/clean-blog/)
 
-Very easy content editing and management structure of the site (the site can be generated from a shell script!), static pages with great download speeds and the ability to host it anywhere, powerful JavaScript environment allows you to create a dynamic document without restrictions.
+[Clean Blog](http://startbootstrap.com/template-overviews/clean-blog/) is a stylish, responsive blog theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/). This theme features a blog homepage, about page, contact page, and an example post page along with a working PHP contact form.
 
-Very simple, you do not need to edit *HTML, CSS, JS, PHP, ASP, JAVA, PERL, PYTHON, RUBY* and a billion other technologies. Just open .html file and edit TEXT in it. The marked text you are reading is written as plain text. Open the 'View page source' and see it. But if you want these are the technologies they are still.
+## Getting Started
 
-Demo:
-http://aplib.github.io/markdown-site-template
+To begin using this template, choose one of the following options to get started:
+* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/clean-blog/)
+* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-clean-blog.git`
+* Fork the repo
 
-## Installation
+## Bugs and Issues
 
-Required files:
+Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-clean-blog/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/clean-blog/).
 
-* index.html
-* bootstrap.css
-* document.min.js
-* user.js
+## Creator
 
-## Addition components
+Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
 
-Advanced formatting and special features can be added to the document. To do this, copy the component and the necessary resources to the subfolder "components" in the root folder, for example:
+* https://twitter.com/davidmillerskt
+* https://github.com/davidtmiller
 
-* components\YouTube\YouTube.Player.js
+Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
 
-## Explanations of the document.js
+## Copyright and License
 
-document.js located in the root folder of the site. This script contains and load required for operation of the site libraries listed below:
-
-* jquery.js
-* bootstrap.js
-* doT.js
-* controls.js
-* marked.js
-
+Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-clean-blog/blob/gh-pages/LICENSE) license.
