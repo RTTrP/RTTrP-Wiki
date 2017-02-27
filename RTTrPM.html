@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Real-Time Tracking Protocol - RTTrPM</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+   <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <div class="navbar-brand" href="index.html">Version 1.8.7.0</div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+					<li>
+                        <a href="RTTrPM.html">RTTrPM</a>
+                    </li>
+                    <li>
+                        <a href="RTTrPL.html">RTTrPL</a>
+                    </li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" style="background-color:black">Systems and Applications<span class="caret"/></a>
+						<ul class="dropdown-menu" style="background-color:black">
+							<li>
+								<a href="BlackTrax.html" style="background-color:black">BlackTrax</a>
+							</li>
+						</ul>
+					</li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/home-bg.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>RTTrPM</h1>
+                        <hr class="small">
+                        <span class="subheading">Real-Time Tracking Protocol - Motion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<h2>Information</h2>
+					<p>RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).</p>
+					<h3>Data Structures</h3>
+						<img src="img/RTTrPM.png"/>
+						<p>Each packet is comprised of the RTTrP header and if tracking information is available, should contain at least one Trackable module. Each Trackable module should contain a number of sub-modules each of which contain specific types of information about a tracked object or point, including:</p>
+						<ul>
+							<li>
+								Centroid Position (X, Y, Z co-ordinates)
+							</li>
+							<li>
+								Individual Tracked point position (X, Y, Z co-ordinates)
+							</li>
+							<li>
+								Orientation in Euler (X, Y, Z rotation) or Quaternion format (X, Y, Z Q)
+							</li>
+						</ul>
+					<h3>General Information</h3>
+						<p>RTTrPM packets should always be sent at an implementation specific fixed rate. In some scenarios, it is possible to implement a heart beat mechanism by sending RTTrPM packets which contain just an empty RTTrP packet, with an RTTrPM signature.</p>
+			</div>
+        </div>
+		
+		<hr>
+		
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<h2>Modules and Packet Structure</h2>
+					<div class="col-sm-12 col-sm-offset-1">
+						<h3>Packet Modules</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Enumerated Type</th>
+								<th>Value</th>
+							</tr>
+							<tr>
+								<td>Trackable (without Timestamp)</td>
+								<td>0x01</td>
+							</tr>
+							<tr>
+								<td>Trackable (with Timestamp)</td>
+								<td>0x51</td>
+							</tr>
+							<tr>
+								<td>Centroid Position</td>
+								<td>0x02</td>
+							</tr>
+							<tr>
+								<td>Orientation (Quaternion)</td>
+								<td>0x03</td>
+							</tr>
+							<tr>
+								<td>Orientation (Euler)</td>
+								<td>0x04</td>
+							</tr>
+							<tr>
+								<td>Tracked Point Position</td>
+								<td>0x06</td>
+							</tr>
+							<tr>
+								<td>Centroid Acceleration and Velocity</td>
+								<td>0x20</td>
+							</tr>
+							<tr>
+								<td>Tracked Point Acceleration and Velocity</td>
+								<td>0x21</td>
+							</tr>
+						</table>
+						<h3>Real-Time Tracking Protocol (RTTrP) Header</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Header / Integer Signature</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Big Endian: 0x4154, Little Endian: 0x5441</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Header / Float Signature</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Big Endian: 0x4334, Little Endian: 0x3443</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Version </td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Value = 0x0002</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Packet ID</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>Packet sequence number</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Packet Format</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet in bytes including header</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Context</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>User definable</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Number of Packet Modules </td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>Packet Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Packet Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<p>For more in-depth details on the RTTrP packet header see <a href="index.html" style="color:#666666"><u>RTTrP</u></a>.</p>
+						<h3>Packet Module - Trackable (without Timestamp)</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x01</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Name</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Length of Trackable Name</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Name</td>
+								<td>UTF8</td>
+								<td>Variable</td>
+								<td>Length is equal to Trackable Name Length</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Number of Packet Modules</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td> Total number of sub-modules</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Packet Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Packet Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<h3>Packet Module - Trackable (with Timestamp)</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x51</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Name</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Length of Trackable Name</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Name</td>
+								<td>UTF8</td>
+								<td>Variable</td>
+								<td>Length is equal to Trackable Name Length</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Timestamp</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>Sequence number (Frame ID)</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Number of Packet Modules</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td> Total number of sub-modules</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Packet Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Packet Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<h3>Packet Module - Centroid Position</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x02</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size = 29 (0x1D)</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Latency</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>X</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the X coordinate</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Y</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Y coordinate</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Z</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Z coordinate</td>
+							</tr>
+						</table>
+						<h3>Packet Module - Tracked Point Position</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x06</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size = 30 (0x1E)</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Latency</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>X</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the X coordinate</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Y</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Y coordinate</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Z</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Z coordinate</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Index</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Tracked Point Index (0x00, 0x01, 0x02 etc.)</td>
+							</tr>
+						</table>
+						<p><b>NOTE</b>: When outputting Tracked Point position/acceleration/velocity, there is a single module <b>for each point</b></p>
+						<h3>Packet Module - Orientation (Quaternion)</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x03</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size = 37</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Latency</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Qx</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>X component of tracked object using quaternions</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Qy</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Y component of tracked object using quaternions</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Qz</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Z component of tracked object using quaternions</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Qw</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Complex component of tracked object using quaternions</td>
+							</tr>
+						</table>
+						<h3>Packet Module - Orientation (Euler)</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x04</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size = 31</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Latency</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Approximate time in milliseconds since last measurement, if equal to 0xFFFF, overflow</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Order</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Value = see order table below</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>R1</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Rotation in Rad along first axis</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>R2</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Rotation in Rad along second axis</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>R3</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Rotation in Rad along third axis</td>
+							</tr>
+						</table>
+						<p>For a list of Euler Angle Order values, please see <a href="Euler-Order.html stylestyle="color:#666666"><u>Euler Order</u></a></p>
+						<h3>Packet Module - Centroid Acceleration and Velocity</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x20</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including the type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>X</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the X coordinate</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Y</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Y coordinate</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Z</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Z coordinate</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Acceleration X</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid acceleration in the X direction</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Acceleration Y</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid acceleration in the Y direction</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Acceleration Z</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid acceleration in the Z direction</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>Velocity X</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid velocity in the X direction</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Velocity Y</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid velocity in the Y direction</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>Velocity Z</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated centroid velocity in the Z direction</td>
+							</tr>
+						</table>
+						<h3>Packet Module - Tracked Point Acceleration and Velocity</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x21</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including the type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>X</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the X coordinate</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Y</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Y coordinate</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Z</td>
+								<td>Double</td>
+								<td>8</td>
+								<td>Position of the Z coordinate</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Acceleration X</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point acceleration in the X direction</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Acceleration Y</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point acceleration in the Y direction</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Acceleration Z</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point acceleration in the Z direction</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>Velocity X</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point velocity in the X direction</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Velocity Y</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point velocity in the Y direction</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>Velocity Z</td>
+								<td>Float</td>
+								<td>4</td>
+								<td>Calculated tracked point velocity in the Z direction</td>
+							</tr>
+							<tr>
+								<td>11</td>
+								<td>Index</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Tracked Point Index (0x00, 0x01, 0x02 etc.)</td>
+							</tr>
+						</table>
+					</div>
+			</div>
+		</div>
+	</div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Theme by <a href="https://startbootstrap.com/template-overviews/clean-blog/" style="color:#666666"><u>Start Bootstrap</u></a>, Powered by <a href="https://pages.github.com/" style="color:#666666"><u>GitHub Pages</u></a></p>
+					<p class="copyright text-muted">Copyright &copy 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script> -->
+
+    <!-- Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

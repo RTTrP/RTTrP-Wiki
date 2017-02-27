@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Real-Time Tracking Protocol</title>
+    <title>Real-Time Tracking Protocol - BlackTrax</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -82,9 +82,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>RTTrP</h1>
+                        <h1>BlackTrax</h1>
                         <hr class="small">
-                        <span class="subheading">Real Time Tracking Protocol - Lighting and Motion</span>
+                        <span class="subheading">The BlackTrax Implementation of RTTrPM and RTTrPL</span>
                     </div>
                 </div>
             </div>
@@ -96,48 +96,56 @@
         <div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Information</h2>
-					<p>The Real Time Tracking Protocol (RTTrP) is a suite of Protocols developed to transmit tracked motion information between systems.</p>
-					<p>RTTrP is comprised of two separate protocols which share a common header:</p>
-					<ul>
-						<li>
-							<a href="RTTrPM.html" style="color:#666666"><u><b>RTTrPM</b> (Real-Time Tracking Protocol - Motion)</u></a>
-						</li>
-						<li>
-							<a href="RTTrPL.html" style="color:#666666"><u><b>RTTrPL</b> (Real-Time Tracking Protocol - Lighting)</u></a>
-						</li>
-					</ul>
-					<p><b>Note</b>: As of August 19th, 2014, Tracking Protocol is renamed to RTTrPM, On-the-Fly Merging (OTFM) is renamed to RTTrPL and common elements shared between the protocols are now named RTTrP.</p>
-				<h3>Data Structures</h3>
-					<p>RTTrP is simply a packet header, which encapsulates RTTrPL, and RTTrPM packets. An RTTrP Packet contains any number of packet modules, either Output modules (RTTrPL) or Trackable modules (RTTrPM), but not both. Each type contains other packet modules nested within, which contain further information.</p>
-					<p>For RTTrPL, Output modules contain a number of nested modules which contain information about specific DMX universes and the channels being controlled. Whereas for RTTrPM, Trackable modules contain other modules which provide information about the motion of a specific tracked object.</p>
-					<img src="img/RTTrP.png"/>
-				<h3>General Information</h3>
-				<div class="col-sm-12 col-sm-offset-1">
-					<h4>Real-Time Tracking Protocol - Motion</h4>
-						<p>RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).</p>
-					<h4>Real-Time Tracking Protocol - Lighting</h4>
-						<p>RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.</p>
-				</div>
-				<p>The Integer Signature field is always one of two values to define Endinaness of the integer type fields in a packet. To distinguish an RTTrPL packet from an RTTrPM packet, the Floating Point Signature Fields should be set to the following:</p>
+					<p>Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.</p>
+				
+				<h3>BlackTrax - RTTrPM</h3>
+				<p>The BlackTrax tracking system generates RTTrPM to output to third-party listeners, such as media servers. BlackTrax outputs tracking information for individual beacon tracked points using Tracked Point modules. Each BlackTrax beacon can have up to three individual LEDs/tracked points. Alternatively, the system can also output Centroid modules, which calculate the center position of a tracked object (Trackable) based on the centroid of each individual LED attached to a beacon. Some other general points regarding the BlackTrax implementation of RTTrPM:</p>
 				<ul>
 					<li>
-						<b>RTTrPM</b>: Big Endian - 0x4434, Little Endian - 0x3444
+						<p>BlackTrax sends out RTTrPM packets at a rate of 100Hz</p>
 					</li>
 					<li>
-						<b>RTTrPL</b>: Big Endian - 0x4334, Little Endian - 0x3443
+						<p>BlackTrax by default sends out a heartbeat, or empty RTTrP header with an RTTrPM signature if no beacon or LED data is available in the current frame</p>
+					</li>
+					<li>
+						<p>BlackTrax has the ability to add and remove different modules at any given time</p>
+					</li>
+					<li>
+						<p>In the BlackTrax implementation of the Trackable module with Timestamp, the Timestamp value is equal to the frame ID of the cameras in the BlackTrax system</p>					
+					</li>
+					<li>
+						<p>Euler Orientation modules always send with an order of 0x0123 (X1, Y1, Z1)</p>					
+					</li>
+					<li>
+						<p>The Tracked Point modules correspond to the LEDs on a BlackTrax beacon (trackable), the Index is either 0x01, 0x02 or 0x03</p>					
+					</li>
+					<li>
+						<p>The context field is always set to -1 (0xFFFFFFFF) as Trackable information sent out of BlackTrax as RTTrPM does not use Chapter data and does not depend on any fixtures/moving lights.</p>					
 					</li>
 				</ul>
-				<p>Lastly, the context field is a user definable field that can be used for any purpose. See the section <a href="Systems_and_Applications.html" style=style="color:#666666"><u>Systems and Applications</u></a> for examples of how this field is used.</p>			    
-			</div>
-		</div>
-		
-		<hr>
-		
-		<div class="row">
-			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-				<h2>Modules and Packet Structure</h2>
+				<h3>BlackTrax - RTTrPL</h3>
+				<p>The BlackTrax tracking system uses RTTrPL in a specific manner, the following are some points related specifically to the BlackTrax tracking system and its implementation and use of RTTrPL:</p>
+				<ul>
+					<li>
+						<p>BlackTrax's default UDP lighting packet output address:  238.210.10.3:6456 (Multicast)</p>
+					</li>
+					<li>
+						<p>BlackTrax's default UDP lighting packet synchronization address: 238.210.10.4:6457 (Multicast)</p>
+					</li>
+					<li>
+						<p>BlackTrax keeps a buffer of channels (of all universes) that it is controlling, the lighting node (Peer) should keep the same buffer as well</p>
+					</li>
+					<li>
+						<p>BlackTrax may release all channels and may also release only specific channels when running, it utilizes the Xfade field in a Channel Block module to define when to take control and release a channel</p>
+					</li>
+					<li>
+						<p>If the hold time is set to 0x00, the Peer should never release control automatically as BlackTrax may hold a channel for a long time</p>
+					</li>
+				</ul>
+				<p>To get a Snapshot earlier, the Peer may send out a Lighting Sync packet and BlackTrax will react with a Snapshot, this is used to help sync the two buffers together. This feature is not currently implemented and so the Lighting Sync Module is an optional module. The module structure is as follows:</p>
+				<hr>
 				<div class="col-sm-12 col-sm-offset-1">
-					<h3>Real-Time Tracking Protocol (RTTrP) Header</h3>
+					<h4>Packet Module - Lighting Sync Module</h4>
 					<table class="table-bordered table-striped table-hover" style="width:125%">
 						<tr>
 							<th>Field</th>
@@ -148,101 +156,73 @@
 						</tr>
 						<tr>
 							<td>0</td>
-							<td>Header / Integer Signature</td>
-							<td>UInt16</td>
-							<td>2</td>
-							<td>Big Endian: 0x4154, Little Endian: 0x5441</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Header / Float Signature</td>
-							<td>UInt16</td>
-							<td>2</td>
-							<td>Big Endian: 0x4434 (RTTrPL) / 0x4334 (RTTrPM), Little Endian: 0x3444 (RTTrPL) / 0x3443 (RTTrPM)</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Version </td>
-							<td>UInt16</td>
-							<td>2</td>
-							<td>Value = 0x0002</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Packet ID</td>
-							<td>UInt32</td>
-							<td>4</td>
-							<td>Packet sequence number</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>Packet Format</td>
+							<td>Type</td>
 							<td>UInt8</td>
 							<td>1</td>
-							<td>Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)</td>
+							<td>Value = 0x07</td>
 						</tr>
 						<tr>
-							<td>5</td>
+							<td>1</td>
 							<td>Size</td>
 							<td>UInt16</td>
 							<td>2</td>
-							<td>Size of packet in bytes including header</td>
+							<td>Size of packet module including type and size</td>
 						</tr>
 						<tr>
-							<td>6</td>
-							<td>Context</td>
+							<td>2</td>
+							<td>Device ID</td>
 							<td>UInt32</td>
 							<td>4</td>
-							<td>User definable</td>
+							<td>User defined (Cast assigned)</td>
 						</tr>
 						<tr>
-							<td>7</td>
-							<td>Number of Packet Modules </td>
-							<td>UInt8</td>
-							<td>1</td>
-							<td></td>
+							<td>3</td>
+							<td>Device Sub ID 0</td>
+							<td>UInt32</td>
+							<td>4</td>
+							<td>User Defined</td>
 						</tr>
 						<tr>
-							<td>8</td>
-							<td>Packet Module 0</td>
-							<td>Packet Module</td>
-							<td>Variable</td>
-							<td></td>
+							<td>4</td>
+							<td>Device Sub ID 1</td>
+							<td>UInt32</td>
+							<td>4</td>
+							<td>User Defined</td>
 						</tr>
 						<tr>
-							<td>9</td>
-							<td>Packet Module 1</td>
-							<td>Packet Module</td>
-							<td>Variable</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>...</td>
-							<td>...</td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>5</td>
+							<td>Sequence Number</td>
+							<td>UInt32</td>
+							<td>4</td>
+							<td>Last mismatch sequence. 0 if unknown</td>
 						</tr>
 					</table>
 				</div>
 			</div>
-		</div>
-		
-		<hr>
-		
-		<div class="row">
-			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-				<h2>Versions and Backwards Compatibility</h2>
-					<p>A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.</p>
-				<h2>Tools and Resources</h2>
+			<hr>
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+					<h2>Tools and Testing Applications</h2>
+					<p>Some tools have been provided by the BlackTrax tracking system to be used for integration with other systems.</p>
 					<ul>
 						<li>
-							<a href="http://www.h-schmidt.net/FloatConverter/IEEE754.html" style="color:#666666"><u>IEE 754 Converter</u></a>
+							<p><b>Simulator</b>: The Simulator is a testing application which will simulate positional and rotational data of a beacon sent from the BlackTrax tracking system. Download the ZIP package and double-click on the setup.exe. The Setup Instruction PDF file will help you configure all the communication settings. Additionally, a legacy repository is available <a href="https://github.com/CAST-Software/RTTrP-Legacy.git" style="color:#666666"><u>here</u></a>.</p>
 						</li>
 						<li>
-							<a href="http://rishida.net/tools/conversion/" style="color:#666666"><u>UTF-8 Converter</u></a>
+							<p>Some recorded <a href="https://cast.sharefile.com/d-s1cdbef8844046079" style="color:#666666">RTTrPL data</a> from the BlackTrax tracking system has been provided, along with tools to output this data, in order to test implementations of RTTrPL</p> 
+						</li>	
+						<li>
+							<p>The use of the <a href="https://github.com/CAST-Software/Tools" style="color:#666666">UDP Player</a> is required to play back the provided RTTrPL recordings</p>
+							<ul>
+								<li>
+									<p>Documentation on the use of the UDP Player to play back BlackTrax RTTrPL recordings can be found in the UDP Player package</p>
+								</li>
+							</ul>
 						</li>
-					</ul>
+					</ul>		
+				</div>
+			</div>
+		</div>
 				<!--<hr>
                  Pager 
                 <ul class="pager">
@@ -250,8 +230,6 @@
                         <a href="#">Older Posts &rarr;</a>
                     </li>
                 </ul>-->
-            </div>
-        </div>
     </div>
 
     <hr>

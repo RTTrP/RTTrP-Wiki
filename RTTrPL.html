@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Real-Time Tracking Protocol - RTTrPL</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+   <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <div class="navbar-brand" href="index.html">Version 1.8.7.0</div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+					<li>
+                        <a href="RTTrPM.html">RTTrPM</a>
+                    </li>
+                    <li>
+                        <a href="RTTrPL.html">RTTrPL</a>
+                    </li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" style="background-color:black">Systems and Applications<span class="caret"/></a>
+						<ul class="dropdown-menu" style="background-color:black">
+							<li>
+								<a href="BlackTrax.html" style="background-color:black">BlackTrax</a>
+							</li>
+						</ul>
+					</li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/home-bg.png')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="page-heading">
+                        <h1>RTTrPL</h1>
+                        <hr class="small">
+                        <span class="subheading">Real-Time Tracking Protocol - Lighting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<h2>Information</h2>
+					<p>RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.</p>
+					<h3>Data Structures</h3>
+						<p>An RTTrPL packet is a list of universes, each of which contains a nested list of spots (fixture IDs), which further contain a nested list of channels and their values:</p>
+						<ul>
+							<li>
+								Controlled Universe
+							</li>
+							<li>
+								Controlled Fixtures within each Universe
+							</li>
+							<li>
+								Channels to be controlled
+							</li>
+							<li>
+								DMX Values of controlled channels
+							</li>
+						</ul>
+					<h3>General Information</h3>
+						<ul>
+							<li>
+								In general the Peer is responsible for DMX merging
+							</li>
+							<li>
+								The Peer buffer and RTTrPL generating buffer need to be synchronized
+							</li>
+							<li>
+								Synchronization model: Snapshot / Update, which balances performance and implementation difficulty
+							</li>
+							<li>
+								Snapshot and Update share the same packet format, the type should be indicated by the Action field in the Lighting Output module
+							</li>
+							<li>
+								Snapshot contains all channels of all universes that are being controlled while Update changes only a portion of the buffer
+							</li>
+							<li>
+								An Update may contain one or more universes
+							</li>
+							<li>
+								Hold Time controls when to release the buffer, if a timeout ouccurs, the Peer should release its buffer
+							</li>
+							<li>
+								Out of Sync detection:  Lighting Sequence in Lighting Output module is a sequentially increasing number, if the Peer receives packets out of sequence, it should wait for a Snapshot packet from the generator to re-sync
+							</li>
+						</ul>
+			</div>
+        </div>
+		
+		<hr>
+		
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<h2>Modules and Packet Structure</h2>
+					<div class="col-sm-12 col-sm-offset-1">
+						<h3>Packet Modules</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Enumerated Type</th>
+								<th>Value</th>
+							</tr>
+							<tr>
+								<td>TLighting Output</td>
+								<td>0x07</td>
+							</tr>
+							<tr>
+								<td>Lighting Sync</td>
+								<td>0x8</td>
+							</tr>
+							<tr>
+								<td>Universe</td>
+								<td>0x09</td>
+							</tr>
+							<tr>
+								<td>Spot</td>
+								<td>0x0A</td>
+							</tr>
+						</table>
+						<h3>Real-Time Tracking Protocol (RTTrP) Header</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Header / Integer Signature</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Big Endian: 0x4154, Little Endian: 0x5441</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Header / Float Signature</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Big Endian: 0x4334, Little Endian: 0x3443</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Version </td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Value = 0x0002</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Packet ID</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>Packet sequence number</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Packet Format</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x00 (Raw), 0x01 (Protobuf), 0x02 (Thrift)</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet in bytes including header</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Context</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>User definable</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Number of Packet Modules </td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>Packet Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Packet Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<p>For more in-depth details on the RTTrP packet header see <a href="index.html" style="color:#666666"><u>RTTrP</u></a>.</p>
+						<h3>Packet Module - Lighting Output</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x07</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Lighting Sequence</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>Lighting session sequence. Starting from 0</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Action</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>0x00: snapshot; 0x01: update</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Hold Time</td>
+								<td>UInt32</td>
+								<td>4</td>
+								<td>0x00: Do not release automatically; > 0 milliseconds before releasing</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Number of Universe Modules</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Packet Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>Packet Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<h3>Packet Module - Universe Module</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x09</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Universe ID</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Number of Spot Modules</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Spot Module 0</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>Spot Module 1</td>
+								<td>Packet Module</td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<h3>Packet Module - Spot Module</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Type</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>Value = 0x0A</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Size</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Size of packet module including type and size</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Spot ID</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Fixture ID</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Spot Offset</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Location of the byte offset in a universe</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>Number of Channel Structures</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td></td>
+							<tr>
+								<td>5</td>
+								<td>Channel Block 0</td>
+								<td></td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>Channel Block 1</td>
+								<td></td>
+								<td>Variable</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>...</td>
+								<td>...</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</table>
+						<p><b>NOTE</b>: The Spot ID field refers to the Fixture ID</p>
+						<h3>Channel Blcok (Fixed-Size)</h3>
+						<table class="table-bordered table-striped table-hover" style="width:125%">
+							<tr>
+								<th>Field</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Size (bytes)</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>0</td>
+								<td>Channel Offset</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>Locate the byte offset in Spot (not universe)</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Xfade</td>
+								<td>UInt16</td>
+								<td>2</td>
+								<td>0.00% -- 100.00% (fade / 100) (Could be wrong if cross-channel values are used)</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Value</td>
+								<td>UInt8</td>
+								<td>1</td>
+								<td>DMX channel value</td>
+							</tr>
+						</table>
+					</div>
+			</div>
+		</div>
+	</div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Theme by <a href="https://startbootstrap.com/template-overviews/clean-blog/" style="color:#666666"><u>Start Bootstrap</u></a>, Powered by <a href="https://pages.github.com/" style="color:#666666"><u>GitHub Pages</u></a></p>
+					<p class="copyright text-muted">Copyright &copy 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script> -->
+
+    <!-- Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
