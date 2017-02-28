@@ -97,7 +97,6 @@
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Information</h2>
 					<p>Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.</p>
-				
 				<h3>BlackTrax - RTTrPM</h3>
 				<p>The BlackTrax tracking system generates RTTrPM to output to third-party listeners, such as media servers. BlackTrax outputs tracking information for individual beacon tracked points using Tracked Point modules. Each BlackTrax beacon can have up to three individual LEDs/tracked points. Alternatively, the system can also output Centroid modules, which calculate the center position of a tracked object (Trackable) based on the centroid of each individual LED attached to a beacon. Some other general points regarding the BlackTrax implementation of RTTrPM:</p>
 				<ul>
@@ -143,7 +142,11 @@
 					</li>
 				</ul>
 				<p>To get a Snapshot earlier, the Peer may send out a Lighting Sync packet and BlackTrax will react with a Snapshot, this is used to help sync the two buffers together. This feature is not currently implemented and so the Lighting Sync Module is an optional module. The module structure is as follows:</p>
-				<hr>
+			</div>
+		</div>	
+		<hr>
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<div class="col-sm-12 col-sm-offset-1">
 					<h4>Packet Module - Lighting Sync Module</h4>
 					<table class="table-bordered table-striped table-hover" style="width:125%">
@@ -198,11 +201,9 @@
 						</tr>
 					</table>
 				</div>
-				<hr>
 			</div>
 		</div>
-			
-			
+		<hr>
 		<div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Tools and Testing Applications</h2>
