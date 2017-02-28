@@ -179,7 +179,7 @@
 				</div>
 			<!--<input type="email" name="_replyto"><textarea   name="body"></textarea><input type="submit" value="Send"></form>-->
 
-			<form novalidate method="POST" action="http://formspree.io/RTTrPTeam@blacktrax.ca">
+			<!--<form novalidate method="POST" action="http://formspree.io/RTTrPTeam@blacktrax.ca">
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Name</label>
@@ -187,7 +187,7 @@
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
-					<!--<input type="hidden" name="_replyto" maxlength=120 value="noreply@blacktrax.ca">-->
+					<!--<input type="hidden" name="_replyto" maxlength=120 value="noreply@blacktrax.ca">
 					<input type="hidden" name="_subject" maxlength=120 value="RTTrP Inquiry">
 					<input type="text" name="_gotcha" style="display:none" />
 					<input type="hidden" name="_referrer" value="noreply@blacktrax.ca"/>
@@ -211,7 +211,13 @@
                             <button type="submit" class="btn btn-default">Send</input>
                         </div>
                     </div>
-                </form>
+                </form>-->
+				
+				<form method="POST" action="http://formspree.io/RTTrPTeam@blacktrax">
+					<input type="email" name="email" placeholder="Your email">
+					<textarea name="message" placeholder="Your message"></textarea>
+					<button type="submit">Send</button>
+				</form>
             </div>
         </div>
     </div>
