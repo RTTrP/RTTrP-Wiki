@@ -22,9 +22,9 @@ $(function() {
             $.ajax({
                 url: "https://docs.google.com/forms/d/e/1FAIpQLSc-ENYyT8tL53oSxCMH8al-h2ObLuhYf45QFrdimuDlCKJN_g/formResponse",
                 data: {
-                    entry.833710143: name,
-                    entry.1376413320: email,
-                    entry.752045271: message
+                    "entry.833710143" : name,
+                    "entry.1376413320" : email,
+                    "entry.752045271" : message
                 },
 				type: "POST",
 				dataType: "xml",
