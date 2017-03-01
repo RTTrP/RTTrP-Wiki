@@ -27,12 +27,12 @@ $(function() {
 				statusCode: {
 					0: function() {
 						// Success message
-						$('#success').html("<div class='alert alert-success'>");
-						$('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+						$('div[id="success"]').html("<div class='alert alert-success'>");
+						$('div[id="success"] > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
 							.append("</button>");
-						$('#success > .alert-success')
+						$('div[id="success"] > .alert-success')
 							.append("<strong>Your message has been sent. </strong>");
-						$('#success > .alert-success')
+						$('div[id="success"] > .alert-success')
 							.append('</div>');
 
 						//clear all fields
@@ -40,11 +40,11 @@ $(function() {
 					},
 					200: function() {
 						// Fail message
-						$('#success').html("<div class='alert alert-danger'>");
-						$('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+						$('div[id="success"]').html("<div class='alert alert-danger'>");
+						$('div[id="success"] > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
 							.append("</button>");
-						$('#success > .alert-danger').append("<strong>Sorry " + firstName + ", there was an error sending the e-mail. Please try again!");
-						$('#success > .alert-danger').append('</div>');
+						$('div[id="success"] > .alert-danger').append("<strong>Sorry " + firstName + ", there was an error sending the e-mail. Please try again!");
+						$('div[id="success"] > .alert-danger').append('</div>');
 						//clear all fields
 						$('#gform').trigger("reset");
 					}
@@ -64,6 +64,6 @@ $(function() {
 
 
 /*When clicking on Full hide fail/success boxes */
-$('#entry.833710143').focus(function() {
-    $('#success').html('');
+$('input[name="entry.833710143"]').focus(function() {
+    $('div[id="success"]').html('');
 });
