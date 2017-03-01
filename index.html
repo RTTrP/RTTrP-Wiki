@@ -103,7 +103,7 @@
         <div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Information</h2>
-					<p>The Real Time Tracking Protocol (RTTrP) is a suite of Protocols developed to transmit tracked motion information between systems.</p>
+					<p>The Real Time Tracking Protocol (RTTrP) is a suite of protocols developed to transmit tracked motion information between systems.</p>
 					<p>RTTrP is comprised of two separate protocols which share a common header:</p>
 					<ul>
 						<li>
@@ -134,7 +134,17 @@
 						<b>RTTrPL</b>: Big Endian - 0x4334, Little Endian - 0x3443
 					</li>
 				</ul>
-				<p>Lastly, the context field is a user definable field that can be used for any purpose. See the section <a href="Systems_and_Applications.html" style=style="color:#666666"><u>Systems and Applications</u></a> for examples of how this field is used.</p>			    
+				<p>Lastly, the context field is a user definable field that can be used for any purpose.</p>
+				<h3>Downloads</h3>
+					<p>The <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0" style="color:#666666"><u>RTTrP Repository</u></a> has stub code available which contains packet definitions of both RTTrPM and RTTrPL. Please visit the following for Python and C++ code respecitvely:</p>
+					<ul>
+						<li>
+							<a href="https://github.com/RTTrP/RTTrP-v1.8.7.0/tree/master/Python" style="color:#666666"><u>RTTrPM and RTTrPL Python Code</u><a>
+						</li>
+						<li>
+							<a href="https://github.com/RTTrP/RTTrP-v1.8.7.0/tree/master/C++" style="color:#666666"><u>RTTrPM and RTTrPL C++ Code</u><a>
+						</li>
+					</ul>
 			</div>
 		</div>
 		
@@ -234,13 +244,19 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		
+
 		<div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Versions and Backwards Compatibility</h2>
 					<p>A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.</p>
+				<h2>Systems and Applications</h2>
+					<p>For application specific use cases and systems with have implemented RTTrP, please visit the following:</p>
+					<ul>
+						<li>
+							<a href="BlackTrax.html" style="color:#666666"><u>BlackTrax Tracking System</u></a>
+						<li>
+					</ul>
+					<p>If you would like to have your system listed on this site, please send an e-mail using the <a href="contact.html" style="color:#666666"><u>contact form</u></a>.</p>
 				<h2>Tools and Resources</h2>
 					<ul>
 						<li>
@@ -250,13 +266,6 @@
 							<a href="http://rishida.net/tools/conversion/" style="color:#666666"><u>UTF-8 Converter</u></a>
 						</li>
 					</ul>
-				<!--<hr>
-                 Pager 
-                <ul class="pager">
-                    <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
-                    </li>
-                </ul>-->
             </div>
         </div>
     </div>
@@ -270,23 +279,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <ul class="list-inline text-center">
                         <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
+                            <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -306,10 +299,6 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Contact Form JavaScript
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script> -->
 
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
