@@ -11,7 +11,7 @@ $(function() {
             event.preventDefault(); // prevent default submit behaviour
             // get values from FORM
             var name = $('input[name="entry.833710143"]').val();
-            var email = $('input[name="#entry.1376413320"]').val();
+            var email = $('input[name="entry.1376413320"]').val();
             var message = $('textarea[name="entry.752045271"]').val();
             var firstName = name; // For Success/Failure Message
             // Check for white space in name for Success/Fail message
