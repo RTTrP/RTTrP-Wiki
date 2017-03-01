@@ -27,7 +27,7 @@ $(function() {
                     "entry.752045271" : message
                 },
 				type: "POST",
-				dataType: "xml",
+				dataType: "text",
 				statusCode: {
 					0: function() {
 						// Success message
@@ -54,10 +54,10 @@ $(function() {
 					}
 				}
             });
-        }/*,
+        },
         filter: function() {
             return $(this).is(":visible");
-        },*/
+        },
     });
 
     $("a[data-toggle=\"tab\"]").click(function(e) {
