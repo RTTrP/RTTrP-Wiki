@@ -68,6 +68,28 @@ hr.small {
   font-weight: 800;
   letter-spacing: 1px;
 }
+.dropdown {
+	display: inline-block !important;
+}
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	background: transparent;
+    border-bottom: 1px solid transparent;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+.dropdown:hover .dropdown-menu {
+	display: block;
+}
+.dropdown > a:hover,
+.dropdown > a:focus  {
+  background: transparent !important;
+  border-bottom: 1px solid transparent !important;
+}
 @media only screen and (min-width: 768px) {
   .navbar-custom {
     background: transparent;
@@ -104,8 +126,8 @@ hr.small {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
-  .navbar-custom.is-fixed .dropdown-toggle .dropdown-menu {
-    /* when the user scrolls down, we hide the header right above the viewport */
+  .navbar-custom.is-fixed {
+    /* when the user scrolls down, we hide the header right above the viewport*/
     position: fixed;
     top: -61px;
     background-color: rgba(255, 255, 255, 0.9);
@@ -128,7 +150,7 @@ hr.small {
   .navbar-custom.is-fixed .nav li a:focus {
     color: #0085A1;
   }
-  .navbar-custom.is-visible .dropdown-toggle .dropdown-menu {
+  .navbar-custom.is-visible {
     /* if the user changes the scrolling direction, we show the header */
     -webkit-transform: translate3d(0, 100%, 0);
     -moz-transform: translate3d(0, 100%, 0);
