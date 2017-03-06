@@ -74,12 +74,16 @@ hr.small {
 .dropdown-menu {
 	display: none;
 	position: absolute;
-	background: transparent;
+	background: black;
     border-bottom: 1px solid transparent;
+}
+
+.dropdown-menu > li > a {
+	color: white !important;
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
-  background: transparent;
+  background-color: black;
   border-bottom: 1px solid transparent;
 }
 .dropdown:hover .dropdown-menu {

@@ -1,4 +1,4 @@
-// Floating label headings for the contact form
+;// Floating label headings for the contact form
 $(function() {
     $("body").on("input propertychange", ".floating-label-form-group", function(e) {
         $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
@@ -21,7 +21,15 @@ jQuery(document).ready(function($) {
             },
             function() {
                 var currentTop = $(window).scrollTop();
-                //check if user is scrolling up
+                
+				if($('.dropdown-menu').is(':visible')) {
+					$('.dropdown-menu').hide().end();
+					
+					$('#rttrpmdropdown').mouseover(function() {$(this).find('.dropdown-menu').show().end()}).mouseout(function() {$(this).find('.dropdown-menu').hide().end()});
+					$('#systemsdropdown').mouseover(function() {$(this).find('.dropdown-menu').show().end()}).mouseout(function() {$(this).find('.dropdown-menu').hide().end()});
+				}
+				
+				//check if user is scrolling up
                 if (currentTop < this.previousTop) {
                     //if scrolling up...
                     if (currentTop > 0 && $('.navbar-custom').hasClass('is-fixed')) {
@@ -32,6 +40,7 @@ jQuery(document).ready(function($) {
                 } else if (currentTop > this.previousTop) {
                     //if scrolling down...
                     $('.navbar-custom').removeClass('is-visible');
+					
                     if (currentTop > headerHeight && !$('.navbar-custom').hasClass('is-fixed')) $('.navbar-custom').addClass('is-fixed');
                 }
                 this.previousTop = currentTop;
