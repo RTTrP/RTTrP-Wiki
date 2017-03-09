@@ -104,28 +104,37 @@
         <div class="row">
 			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 				<h2>Information</h2>
-					<p>Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and multi-media applications to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.</p>
+					<p>Applications like the BlackTrax real-time tracking system use RTTrPL and RTTrPM to interface with other lighting and 
+					third party applications (such as media servers, robotic 
+					cameras, and spartial audio systems) to provide tracking for automated lights, and projection mapping. With BlackTrax, RTTrPM is sent at a fixed rate of 100Hz.</p>
 				
 				<h3>BlackTrax - RTTrPM</h3>
-				<p>The BlackTrax tracking system generates RTTrPM to output to third-party listeners, such as media servers. BlackTrax outputs tracking information for individual beacon tracked points using Tracked Point modules. Each BlackTrax beacon can have up to three individual LEDs/tracked points. Alternatively, the system can also output Centroid modules, which calculate the center position of a tracked object (Trackable) based on the centroid of each individual LED attached to a beacon. Some other general points regarding the BlackTrax implementation of RTTrPM:</p>
+				<p>The BlackTrax tracking system generates RTTrPM to output to 
+				third-party listeners, such as media servers. BlackTrax outputs 
+				tracking information for individual Beacons' tracked points using Tracked Point modules. Each BlackTrax 
+				Beacon can have up to three individual LEDs/tracked points. Alternatively, the system can also output Centroid modules, which calculate the center position of a tracked object (Trackable) based on the centroid of each individual LED attached to a 
+				Beacon. Some other general points regarding the BlackTrax implementation of RTTrPM:</p>
 				<ul>
 					<li>
 						<p>BlackTrax sends out RTTrPM packets at a rate of 100Hz</p>
 					</li>
 					<li>
-						<p>BlackTrax by default sends out a heartbeat, or empty RTTrP header with an RTTrPM signature if no beacon or LED data is available in the current frame</p>
+						<p>BlackTrax by default sends out a heartbeat, or empty RTTrP header with an RTTrPM signature if no 
+						Beacon or LED data is available in the current frame</p>
 					</li>
 					<li>
 						<p>BlackTrax has the ability to add and remove different modules at any given time</p>
 					</li>
 					<li>
-						<p>In the BlackTrax implementation of the Trackable module with Timestamp, the Timestamp value is equal to the frame ID of the cameras in the BlackTrax system</p>					
+						<p>In the BlackTrax implementation of the Trackable module with Timestamp, the Timestamp value is equal to the frame ID of the cameras in the BlackTrax system, 
+						as determined by the TimeKeeper</p>					
 					</li>
 					<li>
 						<p>Euler Orientation modules always send with an order of 0x0123 (X1, Y1, Z1)</p>					
 					</li>
 					<li>
-						<p>The Tracked Point modules correspond to the LEDs on a BlackTrax beacon (trackable), the Index is either 0x01, 0x02 or 0x03</p>					
+						<p>The Tracked Point modules correspond to the LEDs on a BlackTrax 
+						Beacon (trackable), the Index is either 0x01, 0x02 or 0x03</p>					
 					</li>
 					<li>
 						<p>The context field is always set to -1 (0xFFFFFFFF) as Trackable information sent out of BlackTrax as RTTrPM does not use Chapter data and does not depend on any fixtures/moving lights.</p>					
@@ -227,7 +236,8 @@
 				<p>Some tools have been provided by the BlackTrax tracking system to be used for integration with other systems.</p>
 				<ul>
 					<li>
-						<p><b>Simulator</b>: The Simulator is a testing application which will simulate positional and rotational data of a beacon sent from the BlackTrax tracking system. <a href="https://cast.sharefile.com/d-s3070457e54146bbb" style="color:#666666">Download the ZIP package</a> and double-click on the setup.exe. The Setup Instruction PDF file will help you configure all the communication settings. Additionally, a legacy repository is available <a href="https://github.com/CAST-Software/RTTrP-Legacy.git" style="color:#666666"><u>here</u></a>.</p>
+						<p><b>Simulator</b>: The Simulator is a testing application which will simulate positional and rotational data of a 
+						Beacon sent from the BlackTrax tracking system. <a href="https://cast.sharefile.com/d-s3070457e54146bbb" style="color:#666666">Download the ZIP package</a> and double-click on the setup.exe. The Setup Instruction PDF file will help you configure all the communication settings. Additionally, a legacy repository is available <a href="https://github.com/CAST-Software/RTTrP-Legacy.git" style="color:#666666"><u>here</u></a>.</p>
 					</li>
 					<li>
 						<p>Some recorded <a href="https://cast.sharefile.com/d-s1cdbef8844046079" style="color:#666666">RTTrPL data</a> from the BlackTrax tracking system has been provided, along with tools to output this data, in order to test implementations of RTTrPL</p> 
