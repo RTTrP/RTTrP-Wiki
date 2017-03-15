@@ -137,6 +137,7 @@
 						Beacon (trackable), the Index is either 0x01, 0x02 or 0x03</p>					
 					</li>
 					<li>
+						<p>The context field in the RTTrP header is always set to the value of the current BlackTrax chapter (0x00000001, etc.), regardless if the current Trackable is present in the chapter, or if no Trackables are present in the RTTrPM packet (i.e. just the heartbeat is being sent). When in standby the Context field is set to 0xFFFFFFFF.</p>
 					</li>
 				</ul>
 				<h3>BlackTrax - RTTrPL</h3>
