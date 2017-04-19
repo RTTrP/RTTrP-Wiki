@@ -106,6 +106,7 @@
 				<h2>Information</h2>
 					<p>RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.</p>
 					<h3>Data Structures</h3>
+		     				<center><img src="img/RTTrPL.png"/></center>
 						<p>An RTTrPL packet is a list of universes, each of which contains a nested list of spots (fixture IDs), which further contain a nested list of channels and their values:</p>
 						<ul>
 							<li>
