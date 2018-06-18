@@ -6,6 +6,6 @@ Welcome to the RTTrP Wiki. This site is powered by GitHub pages. All the code wi
 
 ## Contact Information
 
-For info on the operation of this page, please contact Joe Zampino.
+For info on the operation of this page, please contact Marty Cochrane.
 
-**Joe Zampino**: joseph@blacktrax.ca
+**Marty Cochrane**: marty.cochrane@blacktrax.ca
