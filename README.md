@@ -8,4 +8,4 @@ Welcome to the RTTrP Wiki. This site is powered by GitHub pages. All the code wi
 
 For info on the operation of this page, please contact Marty Cochrane.
 
-**Marty Cochrane**: marty.cochrane@blacktrax.ca
+**Marty Cochrane**: marty.cochrane@blacktrax.ca // Product Manager
