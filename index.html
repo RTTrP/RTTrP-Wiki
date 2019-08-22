@@ -116,7 +116,11 @@
 				<h3>General Information</h3>
 				<div class="col-sm-12 col-sm-offset-1">
 					<h4>Real-Time Tracking Protocol - Motion</h4>
-						<p>RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented).</p>
+						<p>RTTrPM is the protocol that is used to stream to third party listeners that are interested in the position and orientation of a tracking point, relative to the origin of the coordinate system (as defined by the user). The RTTrPM protocol should be sent at a fixed rate. However, if there is no motion data available, then RTTrPM should stop sending (unless a form of heartbeat is implemented). </p>
+					<p>Likewise, the Zone Collision Detection module should only 
+					send Zones that the Trackable is actively colliding (inside) 
+					with. If a Zone is not sent, it is assumed the collision is 
+					not happening and the Trackable is outside of the Zone.</p>
 					<h4>Real-Time Tracking Protocol - Lighting</h4>
 						<p>RTTrPL is used to stream lighting fixture and DMX information to third parties interested in overwriting fixture DMX values sent from a lighting console, for control over said fixtures. RTTrPL output should be triggered by motion data, DMX input, show starting/stopping, and third party requests. As such, it should not send at a fixed rate like the RTTrPM protocol.</p>
 				</div>
@@ -131,7 +135,8 @@
 				</ul>
 				<p>Lastly, the context field is a user definable field that can be used for any purpose.</p>
 				<h3>Downloads</h3>
-					<p>The <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0" style="color:#666666"><u>RTTrP Repository</u></a> has stub code available which contains packet definitions of both RTTrPM and RTTrPL. Please visit the following for Python and C++ code respecitvely:</p>
+					<p>The <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0" style="color:#666666"><u>RTTrP Repository</u></a> has stub code available which contains packet definitions of both RTTrPM and RTTrPL. Please visit the following for Python and C++ code 
+					respectively:</p>
 					<ul>
 						<li>
 							<a href="https://github.com/RTTrP/RTTrP-v1.8.7.0/tree/master/Python" style="color:#666666"><u>RTTrPM and RTTrPL Python Code</u></a>
@@ -280,7 +285,7 @@
                         </li>
                     </ul>
                     <p class="copyright text-muted">Theme by <a href="https://startbootstrap.com/template-overviews/clean-blog/" style="color:#666666"><u>Blackrock Digital</u></a>, Powered by <a href="https://pages.github.com/" style="color:#666666"><u>GitHub Pages</u></a></p>
-					<p class="copyright text-muted">Copyright &copy 2018</p>
+					<p class="copyright text-muted">Copyright &copy 2019</p>
                 </div>
             </div>
         </div>

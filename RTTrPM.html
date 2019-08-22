@@ -126,7 +126,8 @@
 						
 					</ul>
 					<h3>Downloads</h3>
-					<p>The <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0" style="color:#666666"><u>RTTrP Repository</u></a> has stub code available which contains packet definitions of RTTrPM. Please visit the following for Python and C++ code respecitvely:</p>
+					<p>The <a href="https://github.com/RTTrP/RTTrP-v1.8.7.0" style="color:#666666"><u>RTTrP Repository</u></a> has stub code available which contains packet definitions of RTTrPM. Please visit the following for Python and C++ code 
+					respectively:</p>
 					<ul>
 						<li>
 							<a href="https://github.com/RTTrP/RTTrP-v1.8.7.0/tree/master/Python" style="color:#666666"><u>RTTrPM Python Code</u></a>
@@ -181,6 +182,10 @@
 						<tr>
 							<td>Tracked Point Acceleration and Velocity</td>
 							<td>0x21</td>
+						</tr>
+						</tr>
+							<td>Zone Collision Detection</td>
+							<td>0x22</td>
 						</tr>
 					</table>
 					<h3>Real-Time Tracking Protocol (RTTrP) Header</h3>
@@ -822,6 +827,46 @@
 							<td>Tracked Point Index (0x00, 0x01, 0x02 etc.)</td>
 						</tr>
 					</table>
+					<h3>Packet Module - Zone Collision Detection</h3>
+					<table class="table-bordered table-striped table-hover" style="width:125%">
+						<tr>
+							<th>Field</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Size (bytes)</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>0</td>
+							<td>Type</td>
+							<td>UInt8</td>
+							<td>1</td>
+							<td>Value = 0x22</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>Size</td>
+							<td>UInt16</td>
+							<td>2</td>
+							<td>Size of packet module including the type and size</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Length</td>
+							<td>UInt16</td>
+							<td>2</td>
+							<td>Length of the string of Zone names</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Zone IDs</td>
+							<td>UTF8</td>
+							<td>Variable</td>
+							<td>String of all the Zone names that the Trackable 
+							is currently colliding with; each Zone is delimited 
+							by a '$'</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -845,7 +890,7 @@
 						</li>
 					</ul>
 					<p class="copyright text-muted">Theme by <a href="https://startbootstrap.com/template-overviews/clean-blog/" style="color:#666666"><u>Blackrock Digital</u></a>, Powered by <a href="https://pages.github.com/" style="color:#666666"><u>GitHub Pages</u></a></p>
-					<p class="copyright text-muted">Copyright &copy 2018</p>
+					<p class="copyright text-muted">Copyright &copy 2019</p>
 				</div>
 			</div>
 		</div>
