@@ -42,7 +42,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <div class="navbar-brand" href="index.html">Version 2.4.1.0</div>
+                <div class="navbar-brand" href="index.html">Version 2.4.2.0</div>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -120,6 +120,10 @@
 					<p>A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.</p>
 					<p>The current RTTrPM version is 2.4.1.0, however some previous versions have different modules available, but the same overall packet structure. The differences between legacy versions of the protocol are as follows:</p>
 					<ul>
+						<li>
+							<b>Version 2.4.2.0</b>: Zone Collision Detection module was re-designed to include Sub-Modules and removed the delimitation. The 2.4.1.0 method of sending Zones is no longer supported.
+						</li>
+						<br>
 						<li>
 							<b>Version 2.4.1.0</b>: Zone Collision Detection module was added. All prior versions do not have this module present.
 						</li>
@@ -862,19 +866,62 @@
 						</tr>
 						<tr>
 							<td>2</td>
-							<td>Length</td>
-							<td>UInt16</td>
-							<td>2</td>
-							<td>Length of the string of Zone names</td>
+							<td>Number of Zones</td>
+							<td>UInt8</td>
+							<td>1</td>
+							<td>Total number of Zones Sub-Modules included in this packet</td>
 						</tr>
 						<tr>
 							<td>3</td>
-							<td>Zone IDs</td>
+							<td>Zone Sub-Module 1</td>
+							<td>Zone Sub-Module</td>
+							<td>Variable</td>
+							<td>When present, Trackable is colliding with the Zone object defined in the Zone Sub-Module</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>Zone Sub-Module 2</td>
+							<td>Zone Sub-Module</td>
+							<td>Variable</td>
+							<td>When present, Trackable is colliding with the Zone object defined in the Zone Sub-Module</td>
+						</tr>
+						<tr>
+							<td>...</td>
+							<td>...</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+					<h3>Zone Sub-Module - Zone Object</h3>
+					<table class="table-bordered table-striped table-hover" style="width:125%">
+						<tr>
+							<th>Field</th>
+							<th>Name</th>
+							<th>Type</th>
+							<th>Size (bytes)</th>
+							<th>Description</th>
+						</tr>
+						<tr>
+							<td>0</td>
+							<td>Size</td>
+							<td>Uint8</td>
+							<td>1</td>
+							<td>Size of the Sub-Module including the name and size</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>Length</td>
+							<td>Uint8</td>
+							<td>1</td>
+							<td>Length of the Zone Name</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Zone Name</td>
 							<td>UTF8</td>
 							<td>Variable</td>
-							<td>String of all the Zone names that the Trackable 
-							is currently colliding with; each Zone is delimited 
-							by a '$'</td>
+							<td>The name of the Zone itself</td>
 						</tr>
 					</table>
 				</div>
