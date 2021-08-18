@@ -6,6 +6,6 @@ Welcome to the RTTrP Wiki. This site is powered by GitHub pages. All the code wi
 
 ## Contact Information
 
-For info on the operation of this page, please contact Marty Cochrane.
+For info on the operation of this page, please contact Robbins Kuriakose.
 
-**Marty Cochrane**: marty.cochrane@blacktrax.ca
+**Robbins Kuriakose**: robbins.kuriakose@cast-soft.com
