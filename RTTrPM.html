@@ -118,7 +118,7 @@
 						<p>RTTrPM packets should always be sent at an implementation specific fixed rate. In some scenarios, it is possible to implement a heart beat mechanism by sending RTTrPM packets which contain just an empty RTTrP packet, with an RTTrPM signature.</p>
 					<h4>Versions and Backwards Compatibility</h4>					
 					<p>A protocol version number is included in the RTTrP packet header. Users of previous versions of the protocol should always check the “type” field of modules, and ignore new or unrecognized module types. There can be multiple levels of modules within modules and the order of module types within a module is not guaranteed.</p>
-					<p>The current RTTrPM version is 2.4.2.0( compatible with BlackTrax version 2.6.0), however some previous versions have different modules available, but the same overall packet structure. The differences between legacy versions of the protocol are as follows:</p>
+					<p>The current RTTrPM version is 2.4.2.0(compatible with BlackTrax version 2.6.0), however some previous versions have different modules available, but the same overall packet structure. The differences between legacy versions of the protocol are as follows:</p>
 					<ul>
 						<li>
 							<b>February 2020 (for version 2.4.2.0)</b>: Zone Collision Detection module was re-designed to include Sub-Modules and removed the delimitation. The 2.4.1.0 method of sending Zones is no longer supported.
