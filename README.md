@@ -6,6 +6,6 @@ Welcome to the RTTrP Wiki. This site is powered by GitHub pages. All the code wi
 
 ## Contact Information
 
-For info on the operation of this page, please contact Robbins Kuriakose.
+For info on the operation of this page, please contact CAST support.
 
-**Robbins Kuriakose**: robbins.kuriakose@cast-soft.com
+**Support**: support@blacktrax.ca
